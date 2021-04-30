@@ -1,0 +1,1 @@
+"C:\Users\camst\AppData\Local\Programs\Python\Python39\python.exe" "C:\Python JW News\jw_news_parser.py"
