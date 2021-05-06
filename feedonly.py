@@ -1,58 +1,8 @@
-import time
 import smtplib
 import pickle
 import feedparser
-import os
-from selenium import webdriver
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-from bs4 import BeautifulSoup
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from subprocess import call
-
-option = Options()
-option.headless = False
-driver = webdriver.Chrome(options=option)
-
-os.environ['WDM_LOG_LEVEL'] = '0'
-
-driver.minimize_window()
-driver.get('https://www.jw.org/en/library/videos/#en/categories/LatestVideos')
-
-time.sleep(10)
-
-html = driver.page_source
-soup = BeautifulSoup(html, 'html.parser')
-
-videos_list = []
-old_links = []
-
-try:
-    with open('C:/Python JW News/old_links.txt', 'rb') as filehandle:
-        old_links = pickle.load(filehandle)
-except:
-    print("File empty") 
-                    
-for link in soup.find_all("div", {"class":"synopsis lss desc showImgOverlay hasDuration jsLanguageAttributes dir-ltr lang-en ml-E ms-ROMAN"}):
-    href = link.a['href']
-    text = link.find_all('a', {'class':'jsNoScroll'})[1].text
-    image = link.img['src']
-
-    links_dict = {}
-    links_dict['Title'] = text
-    links_dict['Image'] = image
-    links_dict['Link'] = href
-
-    if href not in old_links:
-
-        videos_list.append(links_dict)
-        old_links.append(href)
-
-        with open('C:/Python JW News/old_links.txt', 'wb') as filehandle:
-            pickle.dump(old_links, filehandle)
-    else:
-        continue
 
 d = feedparser.parse('https://www.jw.org/en/whats-new/rss/WhatsNewWebArticles/feed.xml')
 
@@ -88,22 +38,9 @@ for entry in d.entries:
             pickle.dump(old_news, filehandle)
     else:
         continue
-    
-videos = ""
+
 news = ""
 count = 0
-
-for i in videos_list:
-    videos += open("C:/Python JW News/email.html").read().format(Text1=videos_list[count]['Title'], 
-                                            Link1=videos_list[count]['Link'], 
-                                            Img1=videos_list[count]['Image'])
-    count += 1
-
-count = 0
-
-if videos_list != []:
-    videos = "<h3>Latest Videos</h3>" + videos
-    call(["python", "D:\JW.ORG\\New\JWAutoDLNew.py"])
 
 for i in news_list:
     news += open("C:/Python JW News/news.html").read().format(Text2=news_list[count]['Title'], 
@@ -132,12 +69,12 @@ msg['To'] = you
 
 text = "HTML only. Please enable HTML email."
         
-html = open("C:/Python JW News/Start.html").read() + videos + news + "</table></body></html>"
+html = open("C:/Python JW News/Start.html").read() + news + "</table></body></html>"
 
 part1 = MIMEText(text, 'plain')
 part2 = MIMEText(html, 'html')
 
-if news_list or videos_list != []:
+if news_list != []:
     msg.attach(part1)
     msg.attach(part2)
 
@@ -150,5 +87,3 @@ if news_list or videos_list != []:
     mail.login('jworgnewsfeed@gmail.com', 'Willow123!')
     mail.sendmail(me, [you] + them, msg.as_string())
     mail.quit()
-
-driver.quit()
