@@ -149,7 +149,7 @@ count = 0
 
 if videos_list != []:
     videos = "<h3>Latest Videos</h3>" + videos
-    #call(["python", "D:\JW.ORG\\New\JWAutoDLNew.py"])
+    call(["python", "D:\JW.ORG\\New\JWAutoDLNew.py"])
 
 
 for i in news_list:
@@ -174,15 +174,15 @@ if book_list != []:
     
 me = "JW Newsfeed"
 you = "jworgnewsfeed@gmail.com"
-them = ["camster91@gmail.com"]
-# them = ["biancabashley@gmail.com","camster91@gmail.com",
-#         "kesjasamotik@hotmail.com","matthewplawn@gmail.com",
-#         "E.obszanska@hotmail.com","aaronm631@gmail.com",
-#         "nancyjashley@live.com","gordlashley@gmail.com",
-#         "Daniel-d-janeiro@live.ca", "chrislawrence4@hotmail.com",
-#         "mariah_papiah@hotmail.com", "aaroncastillo86@gmail.com",
-#         "janitacastillo85@gmail.com"
-#        ]
+#them = ["camster91@gmail.com"]
+them = ["biancabashley@gmail.com","camster91@gmail.com",
+        "kesjasamotik@hotmail.com","matthewplawn@gmail.com",
+        "E.obszanska@hotmail.com","aaronm631@gmail.com",
+        "nancyjashley@live.com","gordlashley@gmail.com",
+        "Daniel-d-janeiro@live.ca", "chrislawrence4@hotmail.com",
+        "mariah_papiah@hotmail.com", "aaroncastillo86@gmail.com",
+        "janitacastillo85@gmail.com"
+       ]
 
 msg = MIMEMultipart('alternative')
 msg['Subject'] = "New Posts From JW.ORG"
