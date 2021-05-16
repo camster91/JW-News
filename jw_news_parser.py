@@ -149,7 +149,7 @@ count = 0
 
 if videos_list != []:
     videos = "<h3>Latest Videos</h3>" + videos
-    call(["python", "D:\JW.ORG\\New\JWAutoDLNew.py"])
+    call(["python", "D:\JW.ORG\_JWAutoDLNew.py"])
 
 
 for i in news_list:
