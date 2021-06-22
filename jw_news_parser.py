@@ -1,4 +1,3 @@
-import time
 import smtplib
 import pickle
 import feedparser
@@ -32,7 +31,7 @@ videos_list = []
 old_links = []
 
 try:
-    with open('old_links.txt', 'rb') as filehandle:
+    with open('C:\Python JW News\old_links.txt', 'rb') as filehandle:
         old_links = pickle.load(filehandle)
 except:
     print("File empty") 
@@ -52,7 +51,7 @@ for link in soup.find_all("div", {"class":"synopsis lss desc showImgOverlay hasD
         videos_list.append(links_dict)
         old_links.append(href)
 
-        with open('old_links.txt', 'wb') as filehandle:
+        with open('C:\Python JW News\old_links.txt', 'wb') as filehandle:
             pickle.dump(old_links, filehandle)
     else:
         continue
@@ -68,7 +67,7 @@ old_books = []
 pics_list = []
 
 try:
-    with open('old_books.txt', 'rb') as filehandle:
+    with open('C:\Python JW News\old_books.txt', 'rb') as filehandle:
         old_books = pickle.load(filehandle)
 except:
     print("File empty") 
@@ -89,7 +88,7 @@ for link in  soup.find_all("div", {"class":"publicationDesc"}):
         book_list.append(books_dict)
         old_books.append(href)
 
-        with open('old_books.txt', 'wb') as filehandle:
+        with open('C:\Python JW News\old_books.txt', 'wb') as filehandle:
                 pickle.dump(old_books, filehandle)
     else:
         continue
@@ -105,7 +104,7 @@ news_list = []
 old_news = []
 
 try:
-    with open('old_news.txt', 'rb') as filehandle:
+    with open('C:\Python JW News\old_news.txt', 'rb') as filehandle:
         old_news = pickle.load(filehandle)
 except:
     print("File empty")
@@ -129,18 +128,19 @@ for entry in d.entries:
         news_list.append(news_dict)
         old_news.append(news_link)
 
-        with open('old_news.txt', 'wb') as filehandle:
+        with open('C:\Python JW News\old_news.txt', 'wb') as filehandle:
             pickle.dump(old_news, filehandle)
     else:
         continue
 
+download_videos = False
 videos = ""
 news = ""
 books = ""
 count = 0
 
 for i in videos_list:
-    videos += open("email.html").read().format(Text1=videos_list[count]['Title'], 
+    videos += open("C:\Python JW News\\video.html").read().format(Text1=videos_list[count]['Title'], 
                                             Link1=videos_list[count]['Link'], 
                                             Img1=videos_list[count]['Image'])
     count += 1
@@ -148,12 +148,11 @@ for i in videos_list:
 count = 0
 
 if videos_list != []:
-    videos = "<h3>Latest Videos</h3>" + videos
-    call(["python", "D:\JW.ORG\_JWAutoDLNew.py"])
-
+    videos = "<tr><td class='content'><h3>Latest Videos</h3>" + videos + "</td></tr>"
+    download_videos = True
 
 for i in news_list:
-    news += open("news.html").read().format(Text2=news_list[count]['Title'], 
+    news += open("C:\Python JW News\\news.html").read().format(Text2=news_list[count]['Title'], 
                                             Link2=news_list[count]['Link'], 
                                             Img2=news_list[count]['Image'])
     count += 1
@@ -161,16 +160,18 @@ for i in news_list:
 count = 0
 
 if news_list != []:
-    news = "<h3>Latest News</h3>" + news
+    news = "<tr><td class='content'><h3>Latest News</h3>" + news + "</td></tr>"
 
 for i in book_list:
-    books += open("books.html").read().format(Text3=book_list[count]['Title'], 
+    books += open("C:\Python JW News\\books.html").read().format(Text3=book_list[count]['Title'], 
                                             Link3=book_list[count]['Link'], 
                                             Img3=pics_list[count])
     count += 1
 
 if book_list != []:
-    books = "<h3>Latest Books</h3>" + books
+    books = "<tr><td class='content'><h3>Latest Books</h3>" + books + "</td></tr>"
+
+end = open("C:\Python JW News\end.html").read()
     
 me = "JW Newsfeed"
 you = "jworgnewsfeed@gmail.com"
@@ -181,7 +182,8 @@ them = ["biancabashley@gmail.com","camster91@gmail.com",
         "nancyjashley@live.com","gordlashley@gmail.com",
         "Daniel-d-janeiro@live.ca", "chrislawrence4@hotmail.com",
         "mariah_papiah@hotmail.com", "aaroncastillo86@gmail.com",
-        "janitacastillo85@gmail.com"
+        "janitacastillo85@gmail.com", "Bernard_Morissette@hotmail.com",
+        "kayavery@comcast.net"
        ]
 
 msg = MIMEMultipart('alternative')
@@ -191,10 +193,13 @@ msg['To'] = you
 
 text = "HTML only. Please enable HTML email."
         
-html = open("Start.html").read() + videos + news + books + "</table></body></html>"
+html = open("C:\Python JW News\main.html").read() + videos + news + books + end
 
 part1 = MIMEText(text, 'plain')
+
 part2 = MIMEText(html, 'html')
+
+#print(html)
 
 if news_list or videos_list or book_list != []:
     msg.attach(part1)

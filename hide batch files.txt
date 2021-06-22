@@ -1,1 +1,0 @@
-nircmd exec hide "C:\Python JW News\CheckNews.bat"
