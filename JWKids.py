@@ -1,7 +1,6 @@
 import os
 import requests
 import time
-import sys
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -10,9 +9,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+
 def setup_driver():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     return driver
+
 
 def scrape_video_titles(driver, url):
     driver.get(url)
@@ -21,11 +22,12 @@ def scrape_video_titles(driver, url):
     soup = BeautifulSoup(html, 'html.parser')
     return [link.text.strip() for link in soup.find_all("div", {"class": "syn-body lss"})]
 
+
 def process_video(driver, title, target_folder, session, max_retries, url):
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, title)))
     driver.execute_script("arguments[0].scrollIntoView();", element)
     element.click()
-    
+
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, "dropdownHandle"))).click()
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
@@ -55,11 +57,11 @@ def process_video(driver, title, target_folder, session, max_retries, url):
 
 
 def main():
-    target_folder = r"D:\JW.ORG"
+    target_folder = r"D:\JW.ORG - Kids"
     if not os.path.exists(target_folder):
         os.makedirs(target_folder)
 
-    url = "https://www.jw.org/en/library/videos/#en/categories/LatestVideos"
+    url = "https://www.jw.org/en/library/videos/#en/categories/BJF"
     driver = setup_driver()
     video_titles = scrape_video_titles(driver, url)
     session = requests.Session()
@@ -68,13 +70,12 @@ def main():
         complete_file_path = os.path.join(target_folder, title + ".mp4")
         if os.path.isfile(complete_file_path):
             print(f"{title} has already been downloaded. Skipping...")
+            break
         else:
             process_video(driver, title, target_folder, session, 3, url)
-        # Break out of the loop as soon as any file is found
-        if os.path.exists(target_folder):
-            break
 
     driver.quit()
+
 
 if __name__ == "__main__":
     main()

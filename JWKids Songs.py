@@ -1,7 +1,6 @@
 import os
 import requests
 import time
-import sys
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -55,11 +54,11 @@ def process_video(driver, title, target_folder, session, max_retries, url):
 
 
 def main():
-    target_folder = r"D:\JW.ORG"
+    target_folder = r"D:\JW.ORG - Kids Songs"
     if not os.path.exists(target_folder):
         os.makedirs(target_folder)
 
-    url = "https://www.jw.org/en/library/videos/#en/categories/LatestVideos"
+    url = "https://www.jw.org/en/library/videos/#en/categories/ChildrenSongs"
     driver = setup_driver()
     video_titles = scrape_video_titles(driver, url)
     session = requests.Session()
@@ -68,11 +67,11 @@ def main():
         complete_file_path = os.path.join(target_folder, title + ".mp4")
         if os.path.isfile(complete_file_path):
             print(f"{title} has already been downloaded. Skipping...")
+            break
         else:
             process_video(driver, title, target_folder, session, 3, url)
-        # Break out of the loop as soon as any file is found
-        if os.path.exists(target_folder):
-            break
+            if title == video_titles[0]:
+                break
 
     driver.quit()
 
