@@ -10,10 +10,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 os.environ['WDM_LOG_LEVEL'] = '0'
 
@@ -34,7 +34,7 @@ news_list = []
 history = []
 
 try:
-    with open('C:\Python JW News\history.json') as f:
+    with open('C:\\Python JW News\\history.json') as f:
         history = json.load(f)
 except:
     print("File empty") 
@@ -54,7 +54,7 @@ for link in soup.find_all("div", {"class":"synopsis lss desc showImgOverlay hasD
         videos_list.append(links_dict)
         history.append(href)
 
-        with open('C:\Python JW News\history.json', 'w', encoding='utf-8') as f:
+        with open('C:\\Python JW News\\history.json', 'w', encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=4)
     else:
         continue
@@ -65,7 +65,7 @@ WebDriverWait(driver,100).until(EC.presence_of_element_located(
         (By.ID, "pubsViewResults"))) 
 
 try:
-    with open('C:\Python JW News\history.json') as f:
+    with open('C:\\Python JW News\\history.json') as f:
         history = json.load(f)
 except:
     print("File empty") 
@@ -86,7 +86,7 @@ for link in  soup.find_all("div", {"class":"publicationDesc"}):
         book_list.append(books_dict)
         history.append(href)
 
-        with open('C:\Python JW News\history.json', 'w', encoding='utf-8') as f:
+        with open('C:\\Python JW News\\history.json', 'w', encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=4)
     else:
         continue
@@ -99,7 +99,7 @@ for pic in soup.find_all("div", {"class":"cvr-wrapper"}):
 d = feedparser.parse('https://www.jw.org/en/whats-new/rss/WhatsNewWebArticles/feed.xml')
 
 try:
-   with open('C:\Python JW News\history.json') as f:
+   with open('C:\\Python JW News\\history.json') as f:
         history = json.load(f)
 except:
     print("File empty")
@@ -123,7 +123,7 @@ for entry in d.entries:
         news_list.append(news_dict)
         history.append(news_link)
 
-        with open('C:\Python JW News\history.json', 'w', encoding='utf-8') as f:
+        with open('C:\\Python JW News\\history.json', 'w', encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=4)
     else:
         continue
@@ -135,10 +135,10 @@ reading = ""
 none = ""
 count = 0
 
-with open("C:\Python JW News\\bible.txt") as f:
+with open("C:\\Python JW News\\bible.txt") as f:
     bible = lines = f.readlines()
 
-with open("C:\Python JW News\\days.txt") as f:
+with open("C:\\Python JW News\\days.txt") as f:
     reading_links = lines = f.readlines()
 
 x = datetime.datetime.now()
@@ -155,12 +155,12 @@ script_list = reading_links[slice_of_year]
 
 today = x.strftime("%A, %B, %d")
 
-reading += open("C:\Python JW News\\reading.html").read().format(Script=script_list, Day=day_list, YearDay=day_of_year, Today=today)
+reading += open("C:\\Python JW News\\reading.html").read().format(Script=script_list, Day=day_list, YearDay=day_of_year, Today=today)
 
 reading = "<tr><td class='content'><h1>Read the Bible Daily</h1>" + reading + "</td></tr>"
 
 for i in videos_list:
-    videos += open("C:\Python JW News\\video.html").read().format(Text1=videos_list[count]['Title'], 
+    videos += open("C:\\Python JW News\\video.html").read().format(Text1=videos_list[count]['Title'], 
                                             Link1=videos_list[count]['Link'], 
                                             Img1=videos_list[count]['Image'])
     count += 1
@@ -171,7 +171,7 @@ if videos_list != []:
     videos = "<tr><td class='content'><h1>Latest Videos</h1>" + videos + "</td></tr>"
 
 for i in news_list:
-    news += open("C:\Python JW News\\news.html").read().format(Text2=news_list[count]['Title'], 
+    news += open("C:\\Python JW News\\news.html").read().format(Text2=news_list[count]['Title'], 
                                             Link2=news_list[count]['Link'], 
                                             Img2=news_list[count]['Image'])
     count += 1
@@ -182,7 +182,7 @@ if news_list != []:
     news = "<tr><td class='content'><h1>Latest News</h1>" + news + "</td></tr>"
 
 for i in book_list:
-    books += open("C:\Python JW News\\books.html").read().format(Text3=book_list[count]['Title'], 
+    books += open("C:\\Python JW News\\books.html").read().format(Text3=book_list[count]['Title'], 
                                             Link3=book_list[count]['Link'], 
                                             Img3=pics_list[count])
     count += 1
@@ -194,12 +194,12 @@ if book_list != []:
 
 
 
-end = open("C:\Python JW News\end.html").read()
+end = open("C:\\Python JW News\\end.html").read()
 
 emails = []
 email_list = []
 
-text = open("C:\Python JW News\email_list.txt", "r")
+text = open("C:\\Python JW News\\email_list.txt", "r")
 emails = text.readlines()
 
 for line in emails:
@@ -217,7 +217,7 @@ msg['To'] = you
 
 text = "HTML only. Please enable HTML email."
         
-html = open("C:\Python JW News\main.html").read() + reading + videos + news + books + none + end
+html = open("C:\\Python JW News\\main.html").read() + reading + videos + news + books + none + end
 
 part1 = MIMEText(text, 'plain')
 part2 = MIMEText(html, 'html')
