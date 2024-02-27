@@ -207,8 +207,8 @@ for line in emails:
     
 me = "JW Newsfeed <jworgnewsfeed@gmail.com>"
 you = "jworgnewsfeed@gmail.com"
-them = ["camster91@gmail.com"]
-#them = email_list
+#them = ["camster91@gmail.com"]
+them = email_list
 
 msg = MIMEMultipart('alternative')
 msg['Subject'] = "JW.ORG Update"

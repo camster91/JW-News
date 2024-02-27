@@ -12,7 +12,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Constants
-URLS_FILE = "urls_and_titles.txt"
+URLS_FILE = "C:\\Python JW News\\urls_and_titles.txt"
 TARGET_DIRECTORY = "D:\\JW.ORG"
 MAX_RETRIES = 3
 
@@ -61,7 +61,7 @@ def process_video(driver, title, target_folder, session, max_retries, url):
         element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, title)))
     except Exception as e:
         logging.warning("Element with title '%s' not found on the page. Skipping...", title)
-        return
+        return  # Skip to the next URL after logging the warning
 
     driver.execute_script("arguments[0].scrollIntoView();", element)
     element.click()
@@ -74,7 +74,7 @@ def process_video(driver, title, target_folder, session, max_retries, url):
     if file is None:
         logging.warning("Video file link not found for '%s'. Skipping...", title)
         driver.back()
-        return
+        return  # Skip to the next URL after logging the warning
 
     file_link = file["href"]
     file_name = file["href"].split("/")[-1]
@@ -109,14 +109,26 @@ def main():
         logging.error("No URLs found in the file. Exiting...")
         return
 
-    driver = setup_driver(urls[0])
+    session = requests.Session()
+
+    def main():
+        with open(URLS_FILE, 'r') as file:
+            urls = [line.strip() for line in file if line.strip()]
+
+    if not urls:
+        logging.error("No URLs found in the file. Exiting...")
+        return
+
     session = requests.Session()
 
     for url in urls:
+        driver = setup_driver(url)
+
         video_titles = scrape_video_titles(driver, url)
         if not video_titles:
             logging.warning("No video titles found at URL: %s", url)
-            continue
+            driver.quit()
+            continue  # Skip to the next URL in the URL text file
 
         page_title = get_page_title(driver)
         if not page_title:
@@ -130,7 +142,8 @@ def main():
         for title in video_titles:
             process_video(driver, title, target_folder, session, MAX_RETRIES, url)
 
-    driver.quit()
+        driver.quit()  # Close the browser after processing each URL
+
     logging.info("Done!")
 
 if __name__ == "__main__":
