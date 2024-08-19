@@ -110,41 +110,36 @@ def main():
         return
 
     session = requests.Session()
-
-    def main():
-        with open(URLS_FILE, 'r') as file:
-            urls = [line.strip() for line in file if line.strip()]
-
-    if not urls:
-        logging.error("No URLs found in the file. Exiting...")
-        return
-
-    session = requests.Session()
-
     for url in urls:
+        skip_url = False  # Flag to determine if we should skip to the next URL
         driver = setup_driver(url)
-
         video_titles = scrape_video_titles(driver, url)
         if not video_titles:
             logging.warning("No video titles found at URL: %s", url)
             driver.quit()
-            continue  # Skip to the next URL in the URL text file
+            continue
 
-        page_title = get_page_title(driver)
-        if not page_title:
-            logging.warning("No H1 title found at URL: %s", url)
-            page_title = "UnknownTitle"
-
-        folder_name = sanitize_folder_name(page_title)
-        target_folder = os.path.join(TARGET_DIRECTORY, folder_name)
+        page_title = sanitize_folder_name(url.split('/')[-1])
+        target_folder = os.path.join(TARGET_DIRECTORY, page_title)
         os.makedirs(target_folder, exist_ok=True)
 
         for title in video_titles:
-            process_video(driver, title, target_folder, session, MAX_RETRIES, url)
+            complete_file_path = os.path.join(target_folder, title + ".mp4")  # Assuming .mp4 extension
+            if os.path.exists(complete_file_path):
+                logging.info("%s already exists. Skipping to the next URL...", title)
+                skip_url = True
+                break  # Skip further processing for this URL
+            else:
+                # Insert your download logic here
+                pass  # Placeholder for actual download code
 
-        driver.quit()  # Close the browser after processing each URL
+        if skip_url:
+            continue  # Skip to the next URL
+
+        driver.quit()
 
     logging.info("Done!")
 
 if __name__ == "__main__":
     main()
+

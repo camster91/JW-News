@@ -3,17 +3,17 @@ import feedparser
 import os
 import datetime
 import json
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
 
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver = webdriver.Chrome()
+
+driver.get('https://www.jw.org/en/library/videos/#en/categories/LatestVideos')
 
 os.environ['WDM_LOG_LEVEL'] = '0'
 
