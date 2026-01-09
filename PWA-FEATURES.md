@@ -55,7 +55,127 @@ A Progressive Web App that helps Jehovah's Witnesses stay up-to-date with daily 
 
 ---
 
-### 3. **JW.org Content Feed**
+### 3. **Weekly Meeting Tracker**
+**Goal:** Help users prepare for and track weekly congregation meetings (Life and Ministry Meeting & Watchtower Study)
+
+**Features:**
+- [ ] **Current Week Display:**
+  - Show this week's meeting schedule from WOL
+  - Life and Ministry Meeting parts and assignments
+  - Watchtower Study article and paragraphs
+  - Weekly Bible reading assignment
+  - Song numbers for the week
+
+- [ ] **Preparation Tracking:**
+  - Mark "Prepared for Midweek Meeting" ✓
+  - Mark "Prepared for Weekend Meeting" ✓
+  - Track which parts you've studied
+  - Notes for each meeting part
+  - Personal study time tracker
+
+- [ ] **Meeting Material Display:**
+  - Full text of Watchtower study article
+  - Treasures from God's Word section
+  - Apply Yourself to Field Ministry section
+  - Living as Christians section
+  - Direct links to videos/demonstrations
+  - Print-friendly version
+
+- [ ] **Multi-Week View:**
+  - Navigate to past weeks (review what was covered)
+  - See upcoming weeks (prepare ahead)
+  - Week picker/calendar navigation
+  - Search past meeting topics
+
+- [ ] **Meeting Reminders:**
+  - Notification 2 days before midweek meeting
+  - Notification 2 days before weekend meeting
+  - Custom reminder times
+  - "Meeting tonight!" day-of reminder
+
+- [ ] **Progress Statistics:**
+  - Preparation streak tracking
+  - Percentage of meetings prepared for
+  - Average study time per week
+  - Most studied sections
+
+- [ ] **Integration Features:**
+  - Auto-detect current week from date
+  - Link Bible reading to weekly assignment
+  - Highlight scriptures to look up
+  - Download for offline use
+
+- [ ] **Study Tools:**
+  - Highlight/annotate paragraphs
+  - Personal comments and answers
+  - Scripture cross-references
+  - Research additional material
+  - Share study notes with family
+
+**UI Components:**
+- Week selector showing current week dates
+- Two main cards: Midweek Meeting & Weekend Meeting
+- Checklist for each meeting part
+- Expandable sections for each program part
+- "Mark Prepared" prominent button
+- Time remaining to prepare indicator
+- Quick links to WOL full schedule
+
+**Data Structure:**
+```javascript
+{
+  weekOf: '2026-01-05', // Week starting date
+  midweekMeeting: {
+    date: '2026-01-07',
+    theme: 'Appreciating God\'s Mercy',
+    bibleReading: 'Genesis 17-18',
+    parts: [
+      {
+        title: 'Opening Comments',
+        time: '1 min',
+        studied: false
+      },
+      {
+        title: 'Treasures: God Shows Mercy',
+        time: '10 min',
+        video: 'https://...',
+        studied: true,
+        notes: 'Focus on Abraham and Lot'
+      },
+      // ... more parts
+    ],
+    songs: [1, 25, 103],
+    prepared: true,
+    studyTime: 45 // minutes
+  },
+  weekendMeeting: {
+    date: '2026-01-11',
+    publicTalkTitle: 'Why We Can Trust the Bible',
+    watchtowerArticle: {
+      title: 'Love Bears All Things',
+      paragraphs: 20,
+      studied: false,
+      highlights: [3, 7, 15],
+      notes: {}
+    },
+    songs: [45, 72, 133],
+    prepared: false
+  }
+}
+```
+
+**Scraping Source:**
+- URL: `https://wol.jw.org/en/wol/meetings/r1/lp-e/{year}/{week}`
+- Example: `https://wol.jw.org/en/wol/meetings/r1/lp-e/2026/2`
+- Parse HTML for meeting schedule
+- Extract parts, times, titles, links
+- Cache weekly for offline access
+
+**Priority Level:** HIGH - This is a killer feature that makes the app essential for meeting preparation!
+
+---
+
+### 4. **JW.org Content Feed**
 **Goal:** Stay updated with latest videos, publications, and news from JW.org
 
 **Features:**
@@ -92,13 +212,14 @@ A Progressive Web App that helps Jehovah's Witnesses stay up-to-date with daily 
 
 ---
 
-### 4. **Catch-Up Dashboard**
+### 5. **Catch-Up Dashboard**
 **Goal:** Help users identify and complete missed spiritual activities
 
 **Features:**
 - [ ] Overview of all missed activities:
   - Daily texts not read (last 7/30 days)
   - Bible reading assignments not completed
+  - Meetings not prepared for (current/upcoming week)
   - Unwatched videos
   - Unread publications
 
@@ -127,7 +248,7 @@ A Progressive Web App that helps Jehovah's Witnesses stay up-to-date with daily 
 
 ---
 
-### 5. **Progress Tracking & Statistics**
+### 6. **Progress Tracking & Statistics**
 **Goal:** Motivate users with visual progress and achievements
 
 **Features:**
@@ -169,7 +290,7 @@ A Progressive Web App that helps Jehovah's Witnesses stay up-to-date with daily 
 
 ---
 
-### 6. **Notifications & Reminders**
+### 7. **Notifications & Reminders**
 **Goal:** Keep users engaged with timely notifications
 
 **Features:**
@@ -182,6 +303,12 @@ A Progressive Web App that helps Jehovah's Witnesses stay up-to-date with daily 
   - Notification when new video posted
   - Alert for new publication release
   - News article notifications
+
+- [ ] **Meeting Preparation Reminders:**
+  - "Midweek meeting in 2 days - time to prepare!" (Monday)
+  - "Weekend meeting in 2 days - prepare Watchtower" (Friday)
+  - "Meeting tonight!" reminder on meeting day
+  - Custom preparation reminder times
 
 - [ ] **Catch-up Nudges:**
   - Weekly summary of missed activities
@@ -201,7 +328,7 @@ A Progressive Web App that helps Jehovah's Witnesses stay up-to-date with daily 
 
 ---
 
-### 7. **Personalization & Settings**
+### 8. **Personalization & Settings**
 **Goal:** Customize the experience for each user
 
 **Features:**
@@ -230,7 +357,7 @@ A Progressive Web App that helps Jehovah's Witnesses stay up-to-date with daily 
 
 ---
 
-### 8. **Offline Support**
+### 9. **Offline Support**
 **Goal:** Work perfectly without internet connection
 
 **Features:**
@@ -244,7 +371,7 @@ A Progressive Web App that helps Jehovah's Witnesses stay up-to-date with daily 
 
 ---
 
-### 9. **Social & Sharing**
+### 10. **Social & Sharing**
 **Goal:** Share spiritual content with others
 
 **Features:**
